@@ -1,7 +1,7 @@
 package Config::Grammar;
 use strict;
 
-$Config::Grammar::VERSION = '1.10';
+$Config::Grammar::VERSION = '1.11';
 
 sub new($$)
 {
@@ -582,10 +582,13 @@ sub _parse_file($$)
     my $self = shift;
     my $file = shift;
 
-    local *File;
     unless ($file) { $self->{'err'} = "no filename given" ;
                      return undef;};
-    open(File, "$file") or do {
+
+    my $fh;
+    my $mode = "<";
+    $mode .= ":encoding($self->{encoding})" if $self->{encoding};
+    open($fh, $mode, "$file") or do {
         $self->{'err'} = "can't open $file: $!";
         return undef;
     };
@@ -593,7 +596,7 @@ sub _parse_file($$)
 
     local $_;
     my $source = '';
-    while (<File>) {
+    while (<$fh>) {
 	$source .= $_;
         chomp;
         s/^\s+//;
@@ -602,7 +605,7 @@ sub _parse_file($$)
         next if $_ eq '';    # empty lines
         while (/\\$/) {# continuation
             s/\\$//;
-            my $n = <File>;
+            my $n = <$fh>;
             last if not defined $n;
             chomp $n;
             $n =~ s/^\s+//;
@@ -614,7 +617,7 @@ sub _parse_file($$)
         $self->_parse_line($_, $source) or do{ close File; return 0; };
 	$source = '';
     }
-    close File;
+    close $fh;
     return 1;
 }
 
@@ -645,10 +648,13 @@ sub makemintmpl ($@) {
     return $pod;
 }
 
-sub parse($$)
+sub parse($$$)
 {
-    my $self = shift;
-    my $file = shift;
+    my $self        = shift;
+    my $file        = shift;
+    my $args        = shift;
+
+    $self->{encoding} = $args->{encoding};
 
     $self->{cfg}           = {};
     $self->{level}         = 0;
@@ -683,21 +689,26 @@ Config::Grammar - A grammar-based, user-friendly config parser
 
  use Config::Grammar;
 
+ my $args = { encoding => 'utf8' }; # the second paramter to parse() is optional
  my $parser = Config::Grammar->new(\%grammar);
- my $cfg = $parser->parse('app.cfg') or die "ERROR: $parser->{err}\n";
+ my $cfg = $parser->parse('app.cfg', $args) or die "ERROR: $parser->{err}\n";
  my $pod = $parser->makepod();
  my $ex = $parser->maketmpl('TOP','SubNode');
  my $minex = $parser->maketmplmin('TOP','SubNode');
 
 =head1 DESCRIPTION
 
-Config::Grammar is a module to parse configuration files. The
-configuration may consist of multiple-level sections with assignments
-and tabular data. The parsed data will be returned as a hash
-containing the whole configuration. Config::Grammar uses a grammar
-that is supplied upon creation of a Config::Grammar object to parse
-the configuration file and return helpful error messages in case of
-syntax errors. Using the B<makepod> method you can generate
+Config::Grammar is a module to parse configuration files. The optional
+second parameter to the parse() method can be used to specify the file
+encoding to use for opening the file (see documentation for Perl's use
+open pragma).
+
+The configuration may consist of multiple-level sections with
+assignments and tabular data. The parsed data will be returned as a
+hash containing the whole configuration. Config::Grammar uses a
+grammar that is supplied upon creation of a Config::Grammar object to
+parse the configuration file and return helpful error messages in case
+of syntax errors. Using the B<makepod> method you can generate
 documentation of the configuration file format.
 
 The B<maketmpl> method can generate a template configuration file.  If
@@ -1004,7 +1015,8 @@ The data is interpreted as one or more columns separated by spaces.
       },
    });
 
- my $cfg = $parser->parse('test.cfg') or
+ my $args = { encoding => 'utf8' }; # the second paramter to parse() is optional
+ my $cfg = $parser->parse('test.cfg', $args) or
    die "ERROR: $parser->{err}\n";
  print Dumper($cfg);
  print $parser->makepod;
