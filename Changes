@@ -1,5 +1,10 @@
 Revision history for Perl extension Config::Grammar.
 
+2016-02-08
+     
+     * Released 1.11
+     * Allow specification of file encoding (Fritz Zaucker)
+
 2007-09-25
 
      * Released 1.10
