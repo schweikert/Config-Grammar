@@ -689,7 +689,7 @@ Config::Grammar - A grammar-based, user-friendly config parser
 
  use Config::Grammar;
 
- my $args = { encoding => 'utf8' }; # the second paramter to parse() is optional
+ my $args = { encoding => 'utf8' }; # the second parameter to parse() is optional
  my $parser = Config::Grammar->new(\%grammar);
  my $cfg = $parser->parse('app.cfg', $args) or die "ERROR: $parser->{err}\n";
  my $pod = $parser->makepod();
@@ -903,7 +903,7 @@ space will be inserted between the concatenated lines.
 '@include filename' is used to include another file. Include works relative to the
 directory where the parent file is in.
 
-'@define a some value' will replace all occurences of 'a' in the following text
+'@define a some value' will replace all occurrences of 'a' in the following text
 with 'some value'.
 
 Fields in tables that contain white space can be enclosed in either C<'> or C<">.
@@ -1015,7 +1015,7 @@ The data is interpreted as one or more columns separated by spaces.
       },
    });
 
- my $args = { encoding => 'utf8' }; # the second paramter to parse() is optional
+ my $args = { encoding => 'utf8' }; # the second parameter to parse() is optional
  my $cfg = $parser->parse('test.cfg', $args) or
    die "ERROR: $parser->{err}\n";
  print Dumper($cfg);
