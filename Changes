@@ -4,6 +4,7 @@ UNRELEASED
     
      * Fixes 'Name "Config::Grammar::File" used only once' (patch by Salvatore Bonaccorso)
      * Fix spelling error in manpage (patch by Salvatore Bonaccorso)
+     * Use Dist::Zilla to prepare the Perl distribution for CPAN
 
 2016-02-08
      

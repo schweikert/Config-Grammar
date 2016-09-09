@@ -1,7 +1,7 @@
 package Config::Grammar;
 use strict;
 
-$Config::Grammar::VERSION = '1.11';
+$Config::Grammar::VERSION = '1.12';
 
 sub new($$)
 {
