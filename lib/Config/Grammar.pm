@@ -614,7 +614,7 @@ sub _parse_file($$)
         }
 
         $self->{line} = $.;
-        $self->_parse_line($_, $source) or do{ close File; return 0; };
+        $self->_parse_line($_, $source) or do{ close $fh; return 0; };
 	$source = '';
     }
     close $fh;

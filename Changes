@@ -1,5 +1,9 @@
 Revision history for Perl extension Config::Grammar.
 
+UNRELEASED
+    
+     * Fixes 'Name "Config::Grammar::File" used only once' (patch by Salvatore Bonaccorso)
+
 2016-02-08
      
      * Released 1.11
