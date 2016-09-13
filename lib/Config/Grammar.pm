@@ -937,7 +937,7 @@ syntax is as follows:
 
 =head3 Assignments
 
-Assignements take the form: 'variable = value', where value can be any string
+Assignments take the form: 'variable = value', where value can be any string
 (can contain whitespaces and special characters). The spaces before and after
 the equal sign are optional.
 
