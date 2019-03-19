@@ -425,7 +425,7 @@ sub parse($$)
     my $file = shift;
     my $args        = shift;
 
-    $self->{encoding} = $args->{encoding};
+    $self->{encoding} = $args->{encoding} if ref $args eq 'HASH';
 
     $self->{cfg}           = {};
     $self->{level}         = 0;
