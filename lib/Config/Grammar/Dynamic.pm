@@ -423,6 +423,9 @@ sub parse($$)
 {
     my $self = shift;
     my $file = shift;
+    my $args        = shift;
+
+    $self->{encoding} = $args->{encoding};
 
     $self->{cfg}           = {};
     $self->{level}         = 0;
